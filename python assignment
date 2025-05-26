@@ -1,0 +1,97 @@
+'''create a class having a variable dept id ,dept name , dept location dept lead through the constructor department attributes
+create a method to display the department information 
+display the total departments in your organsiation  instead of hard code take the input from user and 
+print get the input from user like no of departments to store that much no of departments in list or dict 
+use for loop to get department information search department ,department id if  it is there it will display info  search department by department _name 
+if it is there it will display department_info'''
+
+
+class Department:
+    total_departments = 0  # Class variable to track count
+
+    def __init__(self, dept_id, dept_name, dept_location, dept_lead):
+        self.dept_id = dept_id
+        self.dept_name = dept_name
+        self.dept_location = dept_location
+        self.dept_lead = dept_lead
+        Department.total_departments += 1
+
+    def __str__(self):
+        return (
+            f"Department ID     : {self.dept_id}\n"
+            f"Department Name   : {self.dept_name}\n"
+            f"Location          : {self.dept_location}\n"
+            f"Lead              : {self.dept_lead}"
+        )
+
+    @classmethod
+    def show_total_departments(cls):
+        print(f"\nTotal Departments in the Organization: {cls.total_departments}")
+
+
+def create_departments():
+    departments = {}  # key: dept_id, value: Department object
+    num = int(input("Enter how many departments to add: "))
+
+    for _ in range(num):
+        print("\n--- Enter Department Details ---")
+        dept_id = input("Department ID: ").strip()
+        dept_name = input("Department Name: ").strip()
+        dept_location = input("Location: ").strip()
+        dept_lead = input("Lead: ").strip()
+
+        if dept_id in departments:
+            print(" Department ID already exists! Skipping...")
+            continue
+
+        dept = Department(dept_id, dept_name, dept_location, dept_lead)
+        departments[dept_id] = dept
+
+    return departments
+
+
+def search_department(departments):
+    while True:
+        print("\n--- Search Menu ---")
+        print("1. Search by Department ID")
+        print("2. Search by Department Name")
+        print("3. Exit Search")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            dept_id = input("Enter Department ID: ").strip()
+            dept = departments.get(dept_id)
+            if dept:
+                print("\n Department Found:\n")
+                print(dept)
+            else:
+                print("No department with that ID.")
+
+        elif choice == '2':
+            name = input("Enter Department Name: ").strip().lower()
+            found = False
+            for d in departments.values():
+                if d.dept_name.lower() == name:
+                    print("\nDepartment Found:\n")
+                    print(d)
+                    found = True
+                    break
+            if not found:
+                print("Department name not found.")
+
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Try again.")
+
+
+def main():
+    print("====== Department Management System ======")
+    departments = create_departments()
+    Department.show_total_departments()
+    search_department(departments)
+
+
+if __name__ == "__main__":
+    main()
+
