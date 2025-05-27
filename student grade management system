@@ -1,0 +1,46 @@
+from datetime import datetime
+student_records = []
+
+def activity_logger(func):
+    def wrapper(*args, **kwargs):
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Function '{func.__name__}' called")
+        return func(*args, **kwargs)
+    return wrapper
+
+# 2. Function to add student data using *args and **kwargs
+@activity_logger
+def add_student(name, student_id, *courses, **scores):
+    student = {
+        "name": name,
+        "id": student_id,
+        "courses": list(courses),
+        "scores": scores  # e.g., {"Math": [80, 85, 90]}
+    }
+    student_records.append(student)
+    print(f"Student {name} added.\n")
+
+# 3. Function to display all student records and calculate averages
+@activity_logger
+def display_student_records():
+    if not student_records:
+        print("No student records available.")
+        return
+
+    for student in student_records:
+        print(f"Name: {student['name']}, ID: {student['id']}")
+        for course in student['courses']:
+            if course in student['scores']:
+                marks = student['scores'][course]
+                avg = sum(marks) / len(marks)
+                grade = "A" if avg >= 90 else "B" if avg >= 80 else "C" if avg >= 70 else "D"
+                print(f"  {course} -> Scores: {marks}, Average: {avg:.2f}, Grade: {grade}")
+            else:
+                print(f"  {course} -> No scores available.")
+        print("-" * 40)
+
+# Adding 
+add_student("Alice", "S101", "Math", "Python", Math=[85, 90, 88], Python=[92, 89, 95])
+add_student("Bob", "S102", "Math", "Physics", Math=[78, 80, 82], Physics=[70, 75, 72])
+add_student("Clara", "S103", "Stats", Stats=[88, 91, 87])
+
+display_student_records()
