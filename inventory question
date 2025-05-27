@@ -1,0 +1,31 @@
+inventory = [
+    ["Strawberry", "Fruit", 3.50, 40, 10],
+    ["Broccoli", "Vegetable", 2.20, 25, 8],
+    ["Cheddar", "Dairy", 5.00, 18, 4],
+    ["Baguette", "Bakery", 2.80, 35, 2],
+    ["Blueberry", "Fruit", 4.00, 22, 6],
+    ["Spinach", "Vegetable", 1.80, 30, 12],
+    ["Yogurt", "Dairy", 1.20, 50, 15],
+    ["Croissant", "Bakery", 3.00, 28, 3],
+]
+total_revenue = sum(item[2] * item[3] for item in inventory)
+print("Total Revenue:", total_revenue)
+#low stock items <5
+low_stock_items = [item[0] for item in inventory if item[4] < 5]
+print("Low Stock Items:", low_stock_items)
+#category wise revenue
+from collections import defaultdict
+
+category_revenue = defaultdict(float)
+for item in inventory:
+    name, category, price, sold, _ = item
+    category_revenue[category] += price * sold
+
+print("Category-wise Revenue:")
+for cat, rev in category_revenue.items():
+    print(f"{cat}: {rev}")
+
+
+
+
+
